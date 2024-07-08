@@ -1191,7 +1191,6 @@ class Graph:
         edges_repr = "\n".join([f"{edge.source_id} --> {edge.target_id}" for edge in self.edges])
         return f"Graph:\nNodes: {vertex_ids}\nConnections:\n{edges_repr}"
 
-
     def layered_topological_sort(
         self,
         vertices: List[Vertex],

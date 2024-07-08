@@ -234,7 +234,7 @@ def get_successors(graph: Dict[str, Dict[str, List[str]]], vertex_id: str) -> Li
     while stack:
         current_id = stack.pop()
         successors_result.append(current_id)
-        stack.extend(graph[current_id]['successors'])
+        stack.extend(graph[current_id]["successors"])
     return successors_result
 
 
@@ -247,7 +247,7 @@ def sort_up_to_vertex(graph: Dict[str, Dict[str, List[str]]], vertex_id: str, is
 
     visited, excluded = set(), set()
     stack = [vertex_id]
-    stop_predecessors = set(stop_or_start_vertex['predecessors'])
+    stop_predecessors = set(stop_or_start_vertex["predecessors"])
 
     while stack:
         current_id = stack.pop()
@@ -257,10 +257,10 @@ def sort_up_to_vertex(graph: Dict[str, Dict[str, List[str]]], vertex_id: str, is
         visited.add(current_id)
         current_vertex = graph[current_id]
 
-        stack.extend(current_vertex['predecessors'])
+        stack.extend(current_vertex["predecessors"])
 
         if current_id == vertex_id or (current_id not in stop_predecessors and is_start):
-            for successor_id in current_vertex['successors']:
+            for successor_id in current_vertex["successors"]:
                 if is_start:
                     stack.append(successor_id)
                 else:
