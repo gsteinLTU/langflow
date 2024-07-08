@@ -1322,6 +1322,21 @@ class Graph:
                 max_index = max(max_index, index_map[successor.id])
         return max_index
 
+    def __convert_to_dict(self) -> Dict[str, Dict[str, List[str]]]:
+        """Converts the graph to a dictionary."""
+        result = {}
+        for vertex in self.vertices:
+            vertex_id = vertex.id
+            sucessors = [i.id for i in self.get_all_successors(vertex)]
+            predecessors = [i.id for i in self.get_predecessors(vertex)]
+            result |= {vertex_id: {"successors": sucessors, "predecessors": predecessors}}
+        return result
+
+    def __filter_vertices(self, vertex_id: str, is_start: bool = False):
+        dictionaryized_graph = self.__convert_to_dict()
+        vertex_ids = sort_up_to_vertex(dictionaryized_graph, vertex_id, is_start)
+        return [self.get_vertex(vertex_id) for vertex_id in vertex_ids]
+
     def sort_vertices(
         self,
         stop_component_id: Optional[str] = None,
@@ -1331,9 +1346,11 @@ class Graph:
         self.mark_all_vertices("ACTIVE")
         if stop_component_id is not None:
             self.stop_vertex = stop_component_id
-            vertices = sort_up_to_vertex(self, stop_component_id)
+            vertices = self.__filter_vertices(stop_component_id)
+
         elif start_component_id:
-            vertices = sort_up_to_vertex(self, start_component_id, is_start=True)
+            vertices = self.__filter_vertices(start_component_id, is_start=True)
+
         else:
             vertices = self.vertices
             # without component_id we are probably running in the chat
